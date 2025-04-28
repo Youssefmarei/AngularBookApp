@@ -1,0 +1,16 @@
+<div>
+    <h2>Book List</h2>
+    <button (click)="toggleAvailable()">
+        {{ showAvailableOnly ? 'Show All Books' : 'Show Available Books Only' }}
+    </button>
+    <ul>
+        @for (book of books; track book.id) {
+        <li>
+            <a [routerLink]="['/books', book.id]">
+                {{ book.title }} by {{ book.author }}
+            </a>
+        </li>
+        }
+
+    </ul>
+</div>
