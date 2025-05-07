@@ -1,8 +1,8 @@
 export interface Book {
-  id: number;
+  id?: string;
   title: string;
   author: string;
   genre: string;
   pageCount: number;
-  availability: boolean;
+  isPremium: boolean;
 }

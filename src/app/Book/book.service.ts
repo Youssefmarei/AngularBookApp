@@ -1,68 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Book } from './book.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { exhaustMap, map, take } from 'rxjs/operators';
+import { type Book } from './book.model';
+import { AuthService } from '../User/Auth/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
-  getBookDetails(bookID: number) {
-    return this.books.find((book) => bookID === book.id);
+  private baseUrl = 'https://anuglar-f22b9-default-rtdb.firebaseio.com/books';
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  getBooks(): Observable<Book[]> {
+    return this.http.get<{ [key: string]: Book }>(this.baseUrl + '.json').pipe(
+      map((responseData: { [key: string]: Book }) => {
+        const books: Book[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            books.push({ ...responseData[key], id: key });
+          }
+        }
+        return books;
+      })
+    );
   }
 
-  getAvailableBooks() {
-    return this.books.filter((book) => book.availability === true);
+  addBook(book: Book): Observable<any> {
+    return this.http.post(`${this.baseUrl}.json`, book);
   }
 
-  getBooks() {
-    return this.books;
+  deleteBook(firebaseId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${firebaseId}.json`);
   }
 
-  private books: Book[] = [
-    {
-      id: 1,
-      title: 'Journey to the Unknown',
-      author: 'Robert Brown',
-      genre: 'Mystery',
-      pageCount: 494,
-      availability: true,
-    },
-    {
-      id: 2,
-      title: 'The Great Adventure',
-      author: 'John Smith',
-      genre: 'Adventure',
-      pageCount: 130,
-      availability: false,
-    },
-    {
-      id: 3,
-      title: 'Beauty and The Beast',
-      author: 'Michael Wilson',
-      genre: 'Romance',
-      pageCount: 836,
-      availability: true,
-    },
-    {
-      id: 4,
-      title: 'Enchanted Forest',
-      author: 'Robert Brown',
-      genre: 'Romance',
-      pageCount: 958,
-      availability: false,
-    },
-    {
-      id: 5,
-      title: 'The Lord of The Rings',
-      author: 'Jane Doe',
-      genre: 'Fantasy',
-      pageCount: 700,
-      availability: true,
-    },
-    {
-      id: 6,
-      title: 'Secrets of the Jungle',
-      author: 'John Smith',
-      genre: 'Mystery',
-      pageCount: 525,
-      availability: false,
-    },
-  ];
+  updateBook(firebaseId: string, book: Book): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${firebaseId}.json`, book);
+  }
+
+  getBookDetails(firebaseId: string): Observable<Book> {
+    return this.http.get<Book>(`${this.baseUrl}/${firebaseId}.json`);
+  }
 }

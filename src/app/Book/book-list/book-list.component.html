@@ -1,16 +1,77 @@
+@if (isLoggedIn) {
 <div>
+    @if (showAddForm){
+    <div class="add-book-form">
+        <form [formGroup]="addBookForm" (ngSubmit)="onAddBook()">
+
+            <h3 for="title">Title:</h3>
+            <input type="text" formControlName="title">
+            @if (addBookForm.get('title')?.invalid && (addBookForm.get('title')?.dirty ||
+            addBookForm.get('title')?.touched))
+            {
+            <p class="errors">Title is required</p>
+            }
+
+            <h3 for="author">Author:</h3>
+            <input type="text" formControlName="author">
+            @if (addBookForm.get('author')?.invalid && (addBookForm.get('author')?.dirty ||
+            addBookForm.get('author')?.touched))
+            {
+            <p class="errors">Author is required</p>
+            }
+
+            <h3 for="genre">Genre:</h3>
+            <input type="text" formControlName="genre">
+            @if (addBookForm.get('genre')?.invalid && (addBookForm.get('genre')?.dirty ||
+            addBookForm.get('genre')?.touched))
+            {
+            <p class="errors">Genre is required</p>
+            }
+
+            <h3 for="pageCount">Page Count:</h3>
+            <input type="number" formControlName="pageCount" min=1>
+            @if (addBookForm.get('pageCount')?.invalid && (addBookForm.get('pageCount')?.dirty ||
+            addBookForm.get('pageCount')?.touched))
+            {
+            @if (addBookForm.get('pageCount')?.errors?.['required']) {
+            <p class="errors">Page Count is required</p>
+            }@else if (addBookForm.get('pageCount')?.errors?.['min']) {
+            <p class="errors">Enter a valid count</p>
+            }
+            }
+            <h3 for="isPremium">Premium:</h3>
+            <input type="checkbox" formControlName="isPremium">
+            <br>
+            <br>
+            <button type="submit" [disabled]="addBookForm.invalid">Add Book</button>
+            <br>
+            <button type="reset" (click)="toggleAddForm()">Cancel</button>
+        </form>
+    </div>
+
+    }@else {
     <h2>Book List</h2>
     <button (click)="toggleAvailable()">
-        {{ showAvailableOnly ? 'Show All Books' : 'Show Available Books Only' }}
+        {{ showPremiumOnly ? 'Show All Books' : 'Show Premium Books Only' }}
     </button>
+    <button (click)="initializeForm()">Add book</button>
     <ul>
+
         @for (book of books; track book.id) {
         <li>
             <a [routerLink]="['/books', book.id]">
                 {{ book.title }} by {{ book.author }}
             </a>
         </li>
-        }
 
-    </ul>
+        }
+    </ul>}
+
 </div>
+}@else {
+
+
+<h1>Book List is only available for users</h1>
+
+
+}

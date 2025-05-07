@@ -1,1 +1,5 @@
-<h1>Nothing much to see here!</h1>
+@if(isLoggedIn) {
+<h2>Your Email is: {{userEmail}}</h2>
+}@else {
+<h2>Please login to see your email</h2>
+}

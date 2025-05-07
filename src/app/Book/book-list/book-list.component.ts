@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { BookService } from '../book.service';
 import { type Book } from '../book.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from '../../User/Auth/auth/auth.service';
 
 @Component({
   selector: 'app-book-list',
@@ -10,24 +12,59 @@ import { type Book } from '../book.model';
 })
 export class BookListComponent {
   books!: Book[];
-  showAvailableOnly: boolean = false;
+  showPremiumOnly: boolean = false;
+  showAddForm: Boolean = false;
+  addBookForm!: FormGroup;
+  isLoggedIn: boolean = false;
 
-  constructor(public booksService: BookService) {}
+  constructor(
+    public booksService: BookService,
+    private authService: AuthService
+  ) {}
+
+  initializeForm() {
+    this.addBookForm = new FormGroup({
+      title: new FormControl(null, Validators.required),
+      author: new FormControl(null, Validators.required),
+      genre: new FormControl(null, Validators.required),
+      pageCount: new FormControl(null, [
+        Validators.required,
+        Validators.min(0),
+      ]),
+      isPremium: new FormControl(false),
+    });
+    this.toggleAddForm();
+  }
 
   ngOnInit() {
     this.loadBooks();
+    this.authService.user.subscribe((user) => {
+      this.isLoggedIn = !!user;
+    });
   }
 
   public loadBooks() {
-    if (this.showAvailableOnly) {
-      this.books = this.booksService.getAvailableBooks();
-    } else {
-      this.books = this.booksService.getBooks();
-    }
+    this.booksService.getBooks().subscribe((books) => {
+      this.books = this.showPremiumOnly
+        ? books.filter((book) => book.isPremium === true)
+        : books;
+    });
   }
 
   toggleAvailable() {
-    this.showAvailableOnly = !this.showAvailableOnly;
+    this.showPremiumOnly = !this.showPremiumOnly;
     this.loadBooks();
+  }
+
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+  }
+
+  onAddBook() {
+    alert('Book Added!');
+    this.toggleAddForm();
+    this.booksService.addBook(this.addBookForm.value).subscribe(() => {
+      this.loadBooks();
+    });
   }
 }
