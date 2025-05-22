@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../Auth/auth/auth.service';
 
+/**
+ * A component that displays user information and authentication status.
+ */
 @Component({
   selector: 'app-user',
   standalone: false,
@@ -12,6 +15,9 @@ export class UserComponent {
   userEmail!: string;
   constructor(private authService: AuthService) {}
 
+  /**
+   * Initializes the component and subscribes to the authentication status.
+   */
   ngOnInit() {
     this.authService.user.subscribe((user) => {
       this.isLoggedIn = !!user;

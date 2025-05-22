@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * A pipe that transforms a string by returning its first character in uppercase.
+ */
 @Pipe({
   name: 'shorten',
   standalone: false,

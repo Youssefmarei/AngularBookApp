@@ -1,6 +1,8 @@
 <h1>Book App</h1>
-@if (isloggedIn) {
-<a [routerLink]="['/auth']" (click)="logOut()">Logout</a>
-}@else {
-<a [routerLink]="['/auth']">Login</a>
-}
+<nav>
+  @if (isloggedIn) {
+    <a [routerLink]="['/auth']" (click)="logOut()">Logout</a>
+  } @else {
+    <a [routerLink]="['/auth']">Login</a>
+  }
+</nav>

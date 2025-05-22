@@ -8,6 +8,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UserModule } from './User/user.module';
 import { AuthInterceptorService } from './User/Auth/auth/auth-interceptor.service';
 
+/**
+ * The root module of the application.
+ */
 @NgModule({
   declarations: [AppComponent],
   imports: [

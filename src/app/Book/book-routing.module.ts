@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: ':id', component: BookDetailComponent },
 ];
 
+/**
+ * A module that encapsulates all book routes.
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],

@@ -3,6 +3,10 @@ import { UserComponent } from './User/user/user.component';
 import { AuthComponent } from './User/Auth/auth/auth.component';
 import { AuthGuard } from './User/Auth/auth/auth.gaurd';
 
+/**
+ * The main routing configuration for the application.
+ * It defines the routes and their corresponding components.
+ */
 export const appRoutes: Routes = [
   { path: '', redirectTo: '/books', pathMatch: 'full' },
   { path: 'profile', canActivate: [AuthGuard], component: UserComponent },

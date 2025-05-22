@@ -1,60 +1,123 @@
-<div>
-
-    @if (showEditForm){
-    <form #editForm="ngForm" (ngSubmit)="ngOnSubmit()">
-
-        <h3 for="title">Title:</h3>
-        <input type="text" id="title" name="title" required [(ngModel)]="editedBook.title" #title="ngModel">
+<main>
+  @if (showEditForm) {
+    <section>
+      <form #editForm="ngForm" (ngSubmit)="ngOnSubmit()">
+        <label for="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          [(ngModel)]="editedBook.title"
+          #title="ngModel"
+        />
 
         @if (title.dirty || title.touched) {
-        <p *ngIf="title.errors?.['required']" class="errors">Title is required</p>
+          <p
+            *ngIf="title.errors?.['required']"
+            class="errors"
+            aria-describedby="title"
+          >
+            Title is required
+          </p>
         }
 
-        <h3 for="author">Author:</h3>
-        <input type="text" id="author" name="author" required [(ngModel)]="editedBook.author" #author="ngModel">
+        <label for="author">Author:</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          required
+          [(ngModel)]="editedBook.author"
+          #author="ngModel"
+        />
 
         @if (author.dirty || author.touched) {
-        <p *ngIf="author.errors?.['required']" class="errors">Author is required</p>
+          <p
+            *ngIf="author.errors?.['required']"
+            class="errors"
+            aria-describedby="author"
+          >
+            Author is required
+          </p>
         }
 
-        <h3 for="genre">Genre:</h3>
-        <input type="text" id="genre" name="genre" required [(ngModel)]="editedBook.genre" #genre="ngModel">
+        <label for="genre">Genre:</label>
+        <input
+          type="text"
+          id="genre"
+          name="genre"
+          required
+          [(ngModel)]="editedBook.genre"
+          #genre="ngModel"
+        />
 
         @if (genre.dirty || genre.touched) {
-        <p *ngIf="genre.errors?.['required']" class="errors">Genre is required</p>
+          <p
+            *ngIf="genre.errors?.['required']"
+            class="errors"
+            aria-describedby="genre"
+          >
+            Genre is required
+          </p>
         }
 
-        <h3 for="pageCount">Page Count:</h3>
-        <input type="number" id="pageCount" name="pageCount" required min=1 [(ngModel)]="editedBook.pageCount"
-            #pageCount="ngModel">
+        <label for="pageCount">Page Count:</label>
+        <input
+          type="number"
+          id="pageCount"
+          name="pageCount"
+          required
+          min="1"
+          [(ngModel)]="editedBook.pageCount"
+          #pageCount="ngModel"
+        />
 
         @if (pageCount.dirty || pageCount.touched) {
-        <p *ngIf="pageCount.errors?.['required']" class="errors">Page Count is required</p>
-        <p *ngIf="pageCount.errors?.['min']" class="errors">Enter a valid count</p>
+          <p
+            *ngIf="pageCount.errors?.['required']"
+            class="errors"
+            aria-describedby="pageCount"
+          >
+            Page Count is required
+          </p>
+          <p
+            *ngIf="pageCount.errors?.['min']"
+            class="errors"
+            aria-describedby="pageCount"
+          >
+            Enter a valid count
+          </p>
         }
 
-        <h3 for="isPremium">Premium:</h3>
-        <input type="checkbox" id="isPremium" name="isPremium" [(ngModel)]="editedBook.isPremium" #isPremium="ngModel">
-        <br>
-        <button type="submit" [disabled]="editForm.invalid">Save Changes</button>
+        <label for="isPremium">Premium Book:</label>
+        <input
+          type="checkbox"
+          id="isPremium"
+          name="isPremium"
+          [(ngModel)]="editedBook.isPremium"
+          #isPremium="ngModel"
+        />
+        <br />
+        <button type="submit" [disabled]="editForm.invalid">
+          Save Changes
+        </button>
         <button type="reset" (click)="onCancel()">Cancel</button>
-    </form>
-    }@else {
+      </form>
+    </section>
+  } @else {
+    <section>
+      <h2>{{ book.title }}</h2>
+      <h3>Author: {{ book.author }}</h3>
+      <h3>Page Count: {{ book.pageCount }}</h3>
+      <h3>Genre: {{ book.genre | uppercase }}</h3>
+      <h3>
+        Book Tier: {{ (book.isPremium ? 'Premium' : 'Normal') | shorten }}
+      </h3>
 
-    <h2> {{book.title}} </h2>
-    <h3>Author: {{book.author}} </h3>
-    <h3>Page Count: {{book.pageCount}} </h3>
-    <h3>Genre: {{book.genre | uppercase}}</h3>
-    <h3>Book Tier: {{(book.isPremium ? 'Premium' : 'Normal') | shorten}} </h3>
-    <a routerLink="/books">Back to List</a>}
-    <button (click)="toggleEditForm()">Edit Book</button>
-    <button (click)="onDeleteBook()">Delete Book</button>
-
-
-
-
-
-
-
-
-</div>
+      <a routerLink="/books">Back to List</a>
+      <button (click)="toggleEditForm()">Edit Book</button>
+      <button (click)="onDeleteBook()">Delete Book</button>
+    </section>
+  }
+</main>

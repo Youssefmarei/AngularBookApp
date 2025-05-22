@@ -94,4 +94,35 @@ describe('BookListComponent', () => {
     component.toggleAddForm();
     expect(component.showAddForm).toBeTrue();
   });
+
+  it('Should toggle Premium filter when togglePremiumFilter is called', () => {
+    component.showPremiumOnly = false;
+    component.togglePremium();
+    expect(component.showPremiumOnly).toBeTrue();
+  });
+
+  it('should initialize the form when initializeForm is called', () => {
+    component.initializeForm();
+    expect(component.addBookForm).toBeDefined();
+    expect(component.addBookForm.controls['title']).toBeDefined();
+    expect(component.addBookForm.controls['author']).toBeDefined();
+    expect(component.addBookForm.controls['genre']).toBeDefined();
+    expect(component.addBookForm.controls['pageCount']).toBeDefined();
+    expect(component.addBookForm.controls['isPremium']).toBeDefined();
+  });
+
+  it('toggle addBook form when onAddBook() is called, adding the book, and fetching the books', () => {
+    const newBook = {
+      id: '113',
+      author: 'New Author',
+      title: 'New Book',
+      genre: 'New Genre',
+      pageCount: 100,
+      isPremium: false,
+    };
+    component.addBookForm.setValue(newBook);
+    component.onAddBook();
+    expect(component.toggleAddForm).toHaveBeenCalled();
+    expect(mockBookService.addBook).toHaveBeenCalledWith(newBook);
+  });
 });

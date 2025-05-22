@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { BookService } from '../book.service';
 import { Book } from '../book.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { skip } from 'rxjs-compat/operator/skip';
 
+/**
+ * A component that displays the details of a book and allows editing and deleting it.
+ */
 @Component({
   selector: 'app-book-detail',
   standalone: false,
@@ -14,19 +16,25 @@ export class BookDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private bookService: BookService
+    private bookService: BookService,
   ) {}
 
   bookId!: string;
   book!: Book;
   editedBook!: Book;
-  showEditForm: boolean = false;
+  showEditForm: Boolean = false;
 
+  /**
+   * Initializes the component and loads the book details.
+   */
   ngOnInit() {
     this.bookId = this.route.snapshot.paramMap.get('id')!;
     this.loadBook();
   }
 
+  /**
+   * Fetches the book details from the service.
+   */
   loadBook() {
     this.bookService.getBookDetails(this.bookId).subscribe((book) => {
       if (book) {
@@ -36,6 +44,10 @@ export class BookDetailComponent {
     });
   }
 
+  /**
+   * Toggles the visibility of the edit form.
+   * If the form is closed, it resets the edited book details.
+   */
   toggleEditForm() {
     this.showEditForm = !this.showEditForm;
     if (!this.showEditForm) {
@@ -43,6 +55,9 @@ export class BookDetailComponent {
     }
   }
 
+  /**
+   * Submits the edited book details to the service.
+   */
   ngOnSubmit() {
     this.bookService.updateBook(this.bookId, this.editedBook).subscribe(() => {
       alert('Book updated!');
@@ -51,10 +66,16 @@ export class BookDetailComponent {
     });
   }
 
+  /**
+   * Cancels the edit operation.
+   */
   onCancel() {
     this.toggleEditForm();
   }
 
+  /**
+   * Deletes the book after confirming with the user.
+   */
   onDeleteBook() {
     if (confirm('Are you sure you want to delete this book?')) {
       this.bookService.deleteBook(this.bookId).subscribe(() => {

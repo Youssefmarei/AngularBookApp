@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { AuthResponseData } from './auth.model';
 import { Router } from '@angular/router';
 
+/**
+ * A component that handles user authentication in both login and sign-up.
+ */
 @Component({
   selector: 'app-auth',
   standalone: false,
@@ -18,10 +21,18 @@ export class AuthComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Toggles the authentication mode between login and sign-up.
+   */
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
+  /**
+   * Submits the form data for authentication.
+   * It handles both login and sign-up based on the current mode.
+   * @param {NgForm} form The form data containing email and password.
+   */
   onSubmit(form: NgForm) {
     const email = form.value.email;
     const password = form.value.password;

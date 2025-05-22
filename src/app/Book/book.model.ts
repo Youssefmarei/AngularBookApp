@@ -1,3 +1,6 @@
+/**
+ * An interface defining Type book.
+ */
 export interface Book {
   id?: string;
   title: string;

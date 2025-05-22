@@ -4,6 +4,9 @@ import { type Book } from '../book.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../User/Auth/auth/auth.service';
 
+/**
+ * A component that displays a list of books.
+ */
 @Component({
   selector: 'app-book-list',
   standalone: false,
@@ -22,6 +25,9 @@ export class BookListComponent {
     private authService: AuthService
   ) {}
 
+  /**
+   * Initializes the form for adding a new book.
+   */
   initializeForm() {
     this.addBookForm = new FormGroup({
       title: new FormControl(null, Validators.required),
@@ -36,6 +42,9 @@ export class BookListComponent {
     this.toggleAddForm();
   }
 
+  /**
+   * Initializes the component and loads the books.
+   */
   ngOnInit() {
     this.loadBooks();
     this.authService.user.subscribe((user) => {
@@ -43,6 +52,9 @@ export class BookListComponent {
     });
   }
 
+  /**
+   * Loads the books from the service and filters them based on the premium status.
+   */
   public loadBooks() {
     this.booksService.getBooks().subscribe((books) => {
       this.books = this.showPremiumOnly
@@ -51,15 +63,25 @@ export class BookListComponent {
     });
   }
 
-  toggleAvailable() {
+  /**
+   *toggles the premium filter for the book list.
+   */
+  togglePremium() {
     this.showPremiumOnly = !this.showPremiumOnly;
     this.loadBooks();
   }
 
+  /**
+   * toggles the visibility of the add book form.
+   */
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
   }
 
+  /**
+   * Handles the addition of a book.
+   * Calling the addBook method from the book service and reloading the book list.
+   */
   onAddBook() {
     alert('Book Added!');
     this.toggleAddForm();
